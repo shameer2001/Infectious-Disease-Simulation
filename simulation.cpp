@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include <algorithm>
 using namespace std;
 
 
@@ -272,20 +273,74 @@ int main() {
  
 
     srand(time(nullptr)); //seed random number `rand_no` for function below
-    population.random_infection(ptr);
-    population.random_infection(ptr);
+    //population.random_infection(ptr);
+    //population.random_infection(ptr);
 
-   
+
+
+    int n = sizeof(ptr)/sizeof(ptr[0]);
+
+
+    /*
+    for (int i=5; i>0; i--) {
+    
+    }
+    */
+    
+    int pos;
+
+    
     
     for (int i = 0; i < 10; i++) {    
         cout << "\n" << ptr[i];
+
     }
 
-    
+
+
+
+    for (int day =1; day<100 ; day++) { 
+
+
+        float bad_luck = (float) rand()/(float)RAND_MAX; //random generation of number between 0 and 1 
+        //(can use in any proj btw)
+
+        
+        if (bad_luck>.95) { 
+            population.random_infection(ptr);
+              
+
+        }
+
+        for (int i = 0; i < 10; i++) {    
+            if (ptr[i]==1) //find 1s
+            {   pos=i;   
+                cout << "lol" << pos;
+                    
+                for (int j=5; j>0; j--) {
+
+                    if (bad_luck>.95) {    
+                        population.random_infection(ptr);
+                    }
+                    
+                    cout << "On day " << day++ << ", there are " << population.count_infected(ptr, 10) << " poeple infected\n";  
+                }
+
+                ptr[i] = 0;
 
 
 
 
+
+        
+            }
+
+        }
+
+        cout << "On day " << day << ", there are " << population.count_infected(ptr, 10) << " poeple infected\n";
+
+
+    }
     
 
 
