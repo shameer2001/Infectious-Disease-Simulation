@@ -6,6 +6,10 @@
 using namespace std;
 
 
+
+
+//FOR A SINGLE PERSON:
+
 class Person {
     
 private:
@@ -75,24 +79,29 @@ public:
         
     }
 
-    //for later:
-    // 0=suspetable
-    // 1=sick
-    // 1=recovered
-    // 3=vaccinated
+    
 
 
 };
 
 
 
-class Population {
+
+
+
+
+//FOR A WHOLE POPULATION:
+
+
+class Population 
+{
 
 int n_people;
+double prob;
 
 public:
 
-    
+    //make population array:
     int* population(int npeople) //included * to return an array
     {
         n_people = npeople;
@@ -108,25 +117,30 @@ public:
     }
 
 
-    
+
+    // We will represent the status in terms of integers:
+    // 0=suspetable
+    // 1=sick
+    // 2=recovered
+    // 3=vaccinated
 
     void random_infection(int array_name[]) {
         //remeber to include `srand(time(nullptr));` (seed) before executing this func in main
 
         int rand_no = rand()%((0 - n_people) + 1); //generate random number between 0 and pop. no.
 
-        array_name[rand_no] = 1; //the random poerson is infected in the population
-        
-        Person rand_person;
-        rand_person.infect(5); //assume disease is equally deadly for every1 (lasts 5 days for every1)
+
+        if (array_name[rand_no] == 0) // only infect if suseptable (recovered people (i.e. 2) have immunity -- will be used later on too)
+        {
+            array_name[rand_no] = 1; //the random poerson is infected in the population
+        }
     }
 
 
 
 
-
+    //adapted from online:
     int count_infected(int array_name[], int no_elements) {
-        //adapted from online:
         /* checks array a for number of occurrances of value */
         
         int i, count = 0;
@@ -141,27 +155,40 @@ public:
         
     }
 
+    //set transfer probability:
+    float transf_prob(float probability) {
+        prob = probability;
+     
+
+        //probibilty is equivilant to the R-rate?
 
 
+        return prob;
 
-    /*void update() {
-        Person rand_person;
-        rand_person.n--;
+
     }
-    */
-    
+
+
+    //set a certain number of people to be vaxxed
+    void vax(int array_name[], int vax_no) {
+
+        int rand_no = rand()%((0 - n_people) + 1); //generate random number between 0 and pop. no.
+
+        for(int i=0; i<vax_no; i++) //vax `vax_no` number of people
+        {
+            if (array_name[rand_no] == 0) // only vax if suseptable (recovered people (i.e. 2) have immunity -- will be used later on too)
+            {
+                array_name[rand_no] = 3; //the random poerson is vaxxed in the population
+            }
+        }
+    }
 
 
     
 };
 
 
-/*
-Population::population(int npeople) {
-    n_people = npeople;
-    int pop[n_people] = {0}; //create an array representing the population
 
-}*/
 
 
 
@@ -169,52 +196,8 @@ Population::population(int npeople) {
 
 int main() {
     
-    /*
-    Person me;
-    cout << me.status_string();
-
-
-    me.infect(5);
-    cout << me.status_string();
-
-    me.update();
-    cout << me.status_string();
-
-    me.update();
-    cout << me.status_string();
-
-    me.update();
-    cout << me.status_string();
-
-    me.update();
-    cout << me.status_string();
-
-    me.update();
+    //FOR A SINGLE PERSON:
     
-
-    
-    me.vax_yn = "y";
-    
-    
-    cout << me.status_string();
-    */
-
-
-
-    
-    /*int n=5;
-
-    while (n>0) {
-        --n;
-        cout<< n;
-    }*/
-
-    /*int a;
-    cout <<a;*/
-
-    
-    
-
     Person joe;
 
     srand(time(nullptr)); //seed the random number (SEARCH WHAT THIS MEANS AND WHY YOU CAN ONLY CALL THIS ONCE AND WHY YOU HAVE TO CALL THE RAND AGAIN AND AGAIN (LOOP) OTHER WISE IT ONLY GIVES ~SAME NO.)
@@ -243,9 +226,7 @@ int main() {
         
         }
 
-        
-        
-
+     
 
 
         //cout << bad_luck;
@@ -256,7 +237,6 @@ int main() {
             break;
         }
         
-
     
     }
     
@@ -265,79 +245,123 @@ int main() {
 
 
 
+
+
+    //FOR A WHOLE POPULATION:
 
     Population population;
-    
-    int* ptr = population.population(10); //make into a pointer in order to print the array and use it in other functions
 
+    int n = 1000; //number of people
+    int* ptr = population.population(n); //make into a pointer in order to print the array and use it in other functions
+
+
+    //set the number of vaxxed:
+    population.vax(ptr, 0); //0 random people vaxxed (assume no vax available)
  
 
+
+
     srand(time(nullptr)); //seed random number `rand_no` for function below
-    //population.random_infection(ptr);
-    //population.random_infection(ptr);
 
 
-
-    int n = sizeof(ptr)/sizeof(ptr[0]);
-
-
-    /*
-    for (int i=5; i>0; i--) {
-    
-    }
-    */
-    
-    int pos;
-
-    
-    
-    for (int i = 0; i < 10; i++) {    
-        cout << "\n" << ptr[i];
-
-    }
-
-
-
-
-    for (int day =1; day<100 ; day++) { 
+    //loop infection for many days:
+    for (int day =1; day<1000000000 ; day++) { 
 
 
         float bad_luck = (float) rand()/(float)RAND_MAX; //random generation of number between 0 and 1 
         //(can use in any proj btw)
 
-        
+        //random infection:
         if (bad_luck>.95) { 
             population.random_infection(ptr);
-              
-
+            //const int day_beg = day;
         }
 
-        for (int i = 0; i < 10; i++) {    
-            if (ptr[i]==1) //find 1s
-            {   pos=i;   
-                cout << "lol" << pos;
-                    
-                for (int j=5; j>0; j--) {
 
-                    if (bad_luck>.95) {    
-                        population.random_infection(ptr);
+
+
+        //loop for all elements in pop array:
+        for (int i = 0; i < n; i++) {    
+            if (ptr[i]==1) //find 1s
+            {   
+                
+                float rand_no = (float) rand()/(float)RAND_MAX; //seperate random generation of number between 0 and 1
+                float prob = population.transf_prob(0.3); //transfer prob is 0.7
+
+                //condition to infect nearest neighbours of already infected person:
+                if (rand_no>prob){
+                    if (ptr[i-1] == 0 ) {
+                        ptr[i-1] = 1;
                     }
                     
-                    cout << "On day " << day++ << ", there are " << population.count_infected(ptr, 10) << " poeple infected\n";  
+                    if (ptr[i+1] == 0 ) {
+                        ptr[i+1] = 1;
+                    }
                 }
 
-                ptr[i] = 0;
+                //infect 4 random people that the already infected person comes in contact with:
+                for (int k=0; k < 4; k++){
+                    int rnd = rand()%((0 - n) + 1); //generate random number between 0 and n
+
+                    //generate random no after each loop iteration:
+                    float rnd_float = (float) rand()/(float)RAND_MAX; //seperate random generation of number between 0 and 1
+                    
+                    if (rnd_float>prob) //condition to infect people in contact
+                    {
+                        if (ptr[rnd] == 0 ) {
+                            ptr[rnd] = 1;
+                        }
+                    }
+                }
 
 
 
 
+                /*
+                for (int j=5; j>0; j--){
+        
+                    //problem: the above infections are not "allowed" to recover during the recovery of one
+                    
+                    cout << "On day " << day++ << ", there are " << population.count_infected(ptr, n) << " poeple infected\n";  
+                }
+                */
+
+
+               /*
+                const int day_beg = day;  
+
+
+                
+                if (day_beg == day - 5){
+                    ptr[i] = 2;
+                }
+                */
+
+                ptr[i] = 2; //NB: we are assuming an instant recovery :(
+
+                //cout<< day_beg << " " << day << "\n";  
+
+
+                //maybe add the if =2 into a seperate loop and then join ting
 
         
             }
 
         }
 
-        cout << "On day " << day << ", there are " << population.count_infected(ptr, 10) << " poeple infected\n";
+
+
+        //printing no of people infected and the corresponding day:
+        cout << "On day " << day << ", there are " << population.count_infected(ptr, n) << " poeple infected\n";
+
+
+
+        
+        
+        //break condition:s
+        if (day>20 && population.count_infected(ptr, n)==0) {
+            break;
+        }
 
 
     }
