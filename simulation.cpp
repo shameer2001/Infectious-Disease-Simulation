@@ -196,12 +196,15 @@ public:
 
 int main() {
     
+
+
+
     //FOR A SINGLE PERSON:
     
     Person joe;
 
     srand(time(nullptr)); //seed the random number 
-    int step = 1; //how many to follow patient until recovered
+    int step = 1; //how many days to follow patient until recovered
 
     for (step; step<100 ; step++) { //start at day 1 and end at 99 with 1 step increments 
         
