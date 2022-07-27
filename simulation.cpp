@@ -251,7 +251,7 @@ int main() {
 
     Population population;
 
-    int n = 10000000; //number of people
+    int n = 1000; //number of people
     int* ptr = population.population(n); //make into a pointer in order to print the array and use it in other functions
 
 
@@ -317,14 +317,14 @@ int main() {
 
 
 
-                /*
-                for (int j=5; j>0; j--){
+                
+                for (int j=2; j>0; j--){
         
                     //problem: the above infections are not "allowed" to recover during the recovery of one
                     
                     cout << "On day " << day++ << ", there are " << population.count_infected(ptr, n) << " poeple infected\n";  
                 }
-                */
+           
 
 
                /*
@@ -337,7 +337,7 @@ int main() {
                 }
                 */
 
-                ptr[i] = 2; //NB: we are assuming an instant recovery :(
+                ptr[i] = 2;
 
                 //cout<< day_beg << " " << day << "\n";  
 
@@ -359,7 +359,7 @@ int main() {
         
         
         //break condition:s
-        if (day>20 && population.count_infected(ptr, n)==0) {
+        if (day>30 && population.count_infected(ptr, n)==0) {
             break;
         }
 
