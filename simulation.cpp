@@ -118,7 +118,7 @@ public:
 
 
 
-    // We will represent the status in terms of integers:
+    // represent the status in terms of integers:
     // 0=suspetable
     // 1=sick
     // 2=recovered
@@ -200,7 +200,7 @@ int main() {
     
     Person joe;
 
-    srand(time(nullptr)); //seed the random number (SEARCH WHAT THIS MEANS AND WHY YOU CAN ONLY CALL THIS ONCE AND WHY YOU HAVE TO CALL THE RAND AGAIN AND AGAIN (LOOP) OTHER WISE IT ONLY GIVES ~SAME NO.)
+    srand(time(nullptr)); //seed the random number 
     int step = 1; //how many to follow patient until recovered
 
     for (step; step<100 ; step++) { //start at day 1 and end at 99 with 1 step increments 
@@ -251,7 +251,7 @@ int main() {
 
     Population population;
 
-    int n = 1000; //number of people
+    int n = 10000000; //number of people
     int* ptr = population.population(n); //make into a pointer in order to print the array and use it in other functions
 
 
@@ -286,7 +286,7 @@ int main() {
             {   
                 
                 float rand_no = (float) rand()/(float)RAND_MAX; //seperate random generation of number between 0 and 1
-                float prob = population.transf_prob(0.3); //transfer prob is 0.7
+                float prob = population.transf_prob(0.6); //transfer prob is 0.4
 
                 //condition to infect nearest neighbours of already infected person:
                 if (rand_no>prob){
